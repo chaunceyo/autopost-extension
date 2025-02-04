@@ -65,7 +65,33 @@ function exchangeForAccessToken(oauthToken, oauthTokenSecret, oauthVerifier) {
         .catch(error => console.error('Error exchanging for access token:', error));
 }
 
-function postTweet
+function postTweet(tweetText) {
+    chrome.storage.sync.get(['oauthAccessToken', 'oauthAccessTokenSecret'], function(data) {
+        const { oauthAccessToken, oauthAccessTokenSecret } = data;
+
+        if (!oauthAccessToken || !oauthAccessTokenSecret) {
+            console.error('OAuth tokens are not found. Please authenticate first.');
+            return;
+        }
+
+        const tweetData = { status: tweetText };
+        const POST_TWEET_URL = 'https://api.twitter.com/1.1/statuses/update.json';
+
+        const oauthData = {
+            method: 'POST',
+            headers: {
+                'Authorization': getOAuthHeader('POST', POST_TWEET_URL, tweetData, oauthAccessTokenSecret),
+            },
+        };
+
+        fetch(`${POST_TWEET_URL}?status=${encodeURIComponent(tweetText)}`, oauthData)
+            .then(res => res.json())
+            .then(data => {
+                console.log('Tweet posted successfully:', data);
+            })
+            .catch(error => console.error('Error positng tweet:', error));
+    });
+}
 
 
 // chrome.runtime.onInstalled.addListener(() => {
