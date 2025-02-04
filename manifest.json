@@ -1,33 +1,26 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Auto-Post for Twitter",
-    "description": "Schedule posts for Twitter and Instagram",
+    "description": "Schedule posts tweets from Chrome",
     "version": "1.0",
     "permissions": [
-        "activeTab",
+        "tabs",
         "identity",
-        "storage",
+        "storage"
+    ],
+    "host_permissions": [
         "https://api.twitter.com/*"
     ],
     "background": {
-        "scripts": ["background.js"],
-        "persistent": false
+        "service_worker": "background.js"
     },
-    "browser_action": {
-        "default_popup": "popup.html",
-        "default_icon": "icons/icon.png"
+    "action": {
+        "default_popup": "popup.html"
     },
     "content_scripts" :[
         {
             "matches": ["https://twitter.com/*"],
             "js": ["content.js"]
         }
-    ],
-    "oauth2": {
-        "client_id": "YOUR_TWITTER_CLIENT_ID",
-        "scopes": [
-            "read",
-            "write"
-        ]
-    }
+    ]
 }
