@@ -37,7 +37,35 @@ function fetchRequestToken() {
         .catch(error => console.error('Error fetching request token', error))
 }
 
+function exchangeForAccessToken(oauthToken, oauthTokenSecret, oauthVerifier) {
+    const params = new URLSearchParams({
+        oauth_token: oauthToken,
+        oauth_verifier: oauthVerifier
+    });
 
+    const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';
+    const oauthData = {
+        method: 'POST',
+        headers: {
+            'Authorization': getOAutHeader('POST', ACCESS_TOKEN_URL, { oauth_token: oauthToken, oauth_verifier: oauthVerifier }, oauthTokenSecret),
+        },
+    };
+
+    fetch(ACCESS_TOKEN_URL, oauthData)
+        .then(response => response.text())
+        .then(responseText => {
+            const urlParams = new URLSearchParams(responseText);
+            const oauthAccessToken = urlParams.get('oauth_token');
+            const oauthAccessTokenSecret = urlParams.get('oauth_token_secret');
+
+            chrome.storage.sync.set({ oauthAccessToken, oauthAccessTokenSecret }, function() {
+                console.log('Access tokens stored!');
+            });
+        })
+        .catch(error => console.error('Error exchanging for access token:', error));
+}
+
+function postTweet
 
 
 // chrome.runtime.onInstalled.addListener(() => {
