@@ -22,3 +22,30 @@ function authenticateWithTwitter() {
         fetchTwitterAPI(token)
     });
 }
+
+function fetchTwitterAPI(token) {
+    const url = 'https://api.twitter.com/2/tweets';
+    chrome.storage.sync.get(['tweetText', 'scheduleTime'], function(data) {
+        const tweetData = {
+            status: data.tweetText
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tweetData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Tweet posted:', data);
+            alert('Tweet posted successfully!');
+        })
+        .catch(error => {
+            console.error('Error posting tweet:', error);
+            alert('There was an error posting your tweet.');
+        });
+    });
+}
