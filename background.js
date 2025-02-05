@@ -1,7 +1,3 @@
-const API_KEY = 'sjzPDKtV1qjeHine53PG3Nu9W'
-const API_SECRET_KEY = 'TQQB5YQPkrMhjrLY2oortYKfeQ51SbYQibbYTC4YIIii7bLNj9'
-const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
-const OAUTH_CALLBACK = 'https://hkkfpnicfbjjefmhhfpgnpidillminbb.chromiumapp.org/'
 
 function handleRateLimitError(response) {
     const resetTime = response.headers.get('x-rate-limit-reset');
