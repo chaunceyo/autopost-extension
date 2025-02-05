@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if(tweetTextValue && scheduleTimeValue) {
                 chrome.storage.sync.set({ tweetText: tweetTextValue, scheduleTime: scheduleTimeValue}, function () {
                     alert("Post Scheduled!");
+                    console.log('Tweet Text Stored:', tweetText);
                 });
             } else {
                 alert("Please enter both tweet text and schedule time.")
