@@ -1,19 +1,3 @@
-
-function handleRateLimitError(response) {
-    const resetTime = response.headers.get('x-rate-limit-reset');
-    const currentTime = Math.floor(Date.now() / 1000);  // Get current timestamp
-
-    const retryAfter = resetTime - currentTime; // Calculate seconds to wait
-
-    console.log(`Rate limit exceeded. Retry after ${retryAfter} seconds.`);
-
-    // Retry after waiting for the reset time
-    setTimeout(() => {
-        // Retry your request here (you can refactor this into a separate function)
-        fetchTwitterAPI();
-    }, retryAfter * 1000); // Convert to milliseconds
-}
-
 chrome.runtime.onInstalled.addListener(() => {
     console.log("AutoPost Extension Installed.");
 
